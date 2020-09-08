@@ -226,6 +226,7 @@ return function (App $app) {
             if (file_exists($fHtml)) {
                 $fImage = __DIR__ . "/tmp/tmp_" . $id . ".png";
                 exec("wkhtmltoimage --width 700 $fHtml $fImage");
+                
                 header("Content-Type: image/png");
                 ob_clean();
                 $fp = fopen($fImage, 'r');
