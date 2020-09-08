@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!--
+ * OpenBoleto - Geração de boletos bancários em PHP
+ *
+ * LICENSE: The MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        /* Embed the CSS content here */
+        /**
+ * OpenBoleto - Geração de boletos bancários em PHP
+ *
+ * LICENSE: The MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+@media print {
+    .noprint {
+        display:none;
+    }
+}
+
+body{
+    background-color: #ffffff;
+    margin-right: 0;
+}
+
+.table-boleto {
+    font: 9px Arial;
+    width: 666px;
+}
+
+.table-boleto td {
+    border-left: 1px solid #000;
+    border-top: 1px solid #000;
+}
+
+.table-boleto td:last-child {
+    border-right: 1px solid #000;
+}
+
+.table-boleto .titulo {
+    color: #000033;
+}
+
+.linha-pontilhada {
+    color: #000033;
+    font: 9px Arial;
+    width: 100%;
+    border-bottom: 1px dashed #000;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.table-boleto .conteudo {
+    font: bold 10px Arial;
+    height: 11.5px;
+}
+
+.table-boleto .sacador {
+    display: inline;
+    margin-left: 5px;
+}
+
+.table-boleto td {
+    padding: 1px 4px;
+}
+
+.table-boleto .noleftborder {
+    border-left: none !important;
+}
+
+.table-boleto .notopborder {
+    border-top: none !important;
+}
+
+.table-boleto .norightborder {
+    border-right: none !important;
+}
+
+.table-boleto .noborder {
+    border: none !important;
+}
+
+.table-boleto .bottomborder {
+    border-bottom: 1px solid #000 !important;
+}
+
+.table-boleto .rtl {
+    text-align: right;
+}
+
+.table-boleto .logobanco {
+    display: inline-block;
+    max-width: 150px;
+}
+
+.table-boleto .logocontainer {
+    width: 257px;
+    display: inline-block;
+}
+
+.table-boleto .logobanco img {
+    margin-bottom: -5px;
+    height: 27px;
+}
+
+.table-boleto .codbanco {
+    font: bold 20px Arial;
+    padding: 1px 5px;
+    display: inline;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    width: 51px;
+    margin-left: 25px;
+}
+
+.table-boleto .linha-digitavel {
+    font: bold 14px Arial;
+    display: inline-block;
+    width: 406px;
+    text-align: right;
+}
+
+.table-boleto .nopadding {
+    padding: 0px !important;
+}
+
+.table-boleto .caixa-gray-bg {
+    font-weight: bold;
+    background: #ccc;
+}
+
+.info {
+    font: 11px Arial;
+}
+
+.info-empresa {
+    font: 11px Arial;
+}
+
+.header {
+    font: bold 13px Arial;
+    display: block;
+    margin: 4px;
+}
+
+.barcode {
+    height: 50px;
+}
+
+.barcode div {
+    display: inline-block;
+    height: 100%;
+}
+
+.barcode .black {
+    border-color: #000;
+    border-left-style: solid;
+    width: 0px;
+}
+
+.barcode .white {
+    background: #fff;
+}
+
+.barcode .thin.black {
+    border-left-width: 1px;
+}
+
+.barcode .large.black {
+    border-left-width: 3px;
+}
+
+.barcode .thin.white {
+    width: 1px;
+}
+
+.barcode .large.white {
+    width: 3px;
+}
+
+.float_left{
+    float:left;
+}
+
+.center {
+    text-align: center;
+}
+
+.conteudo.cpf_cnpj{
+    float:right;
+    width:24%;
+}
+    </style>
+</head>
+<body>
+
+    <div style="width: 666px">
+    	
+        <div class="info-empresa">
+                        <div style="display: inline-block; vertical-align: super;">
+                <div><strong></strong></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <br>
+
+        <table class="table-boleto" cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+            <tr>
+                <td valign="bottom" colspan="8" class="noborder nopadding">
+                    <div class="logocontainer">
+                        <div class="logobanco">
+                            <img src="data:image/jpg;base64,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" alt="logotipo do banco">
+                        </div>
+                        <div class="codbanco">341-7</div>
+                    </div>
+                    <div class="linha-digitavel">34190.00009 00000.000000 00000.000000 9 83720000000000</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" width="250">
+                    <div class="titulo">Beneficiário</div>
+                    <div class="conteudo"></div>
+                </td>
+                <td>
+                    <div class="titulo">CPF/CNPJ</div>
+                    <div class="conteudo"></div>
+                </td>
+                <td width="120">
+                    <div class="titulo">Agência/Código do Beneficiário</div>
+                    <div class="conteudo rtl"> / </div>
+                </td>
+                <td width="110">
+                    <div class="titulo">Vencimento</div>
+                    <div class="conteudo rtl">08/09/2020</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="titulo">Pagador</div>
+                    <div class="conteudo"></div>
+                </td>
+                <td>
+                    <div class="titulo">Nº documento</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+                <td>
+                    <div class="titulo">Nosso número</div>
+                    <div class="conteudo rtl">000/00000000-0</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="titulo">Espécie</div>
+                    <div class="conteudo">REAL</div>
+                </td>
+                <td>
+                    <div class="titulo">Quantidade</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+                <td>
+                    <div class="titulo">Valor</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+                <td>
+                    <div class="titulo">(-) Descontos / Abatimentos</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+                <td>
+                    <div class="titulo">(=) Valor Documento</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="conteudo"></div>
+                    <div class="titulo">Demonstrativo</div>
+                </td>
+                <td>
+                    <div class="titulo">(-) Outras deduções</div>
+                    <div class="conteudo"></div>
+                </td>
+                <td>
+                    <div class="titulo">(+) Outros acréscimos</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+                <td>
+                    <div class="titulo">(=) Valor cobrado</div>
+                    <div class="conteudo rtl"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"><div style="margin-top: 10px" class="conteudo"></div></td>
+                <td class="noleftborder"><div class="titulo">Autenticação mecânica</div></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="notopborder"><div class="conteudo"></div></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="notopborder"><div class="conteudo"></div></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="notopborder"><div class="conteudo"></div></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="notopborder bottomborder"><div style="margin-bottom: 10px;" class="conteudo"></div></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <div class="linha-pontilhada">Corte na linha pontilhada</div>
+        <br>
+
+        <!-- Ficha de compensação -->
+        <!--
+ * OpenBoleto - Geração de boletos bancários em PHP
+ *
+ * LICENSE: The MIT License (MIT)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<table class="table-boleto" cellpadding="0" cellspacing="0" border="0">
+    <tbody>
+    <tr>
+        <td valign="bottom" colspan="8" class="noborder nopadding">
+            <div class="logocontainer">
+                <div class="logobanco">
+                    <img src="data:image/jpg;base64,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" alt="logotipo do banco">
+                </div>
+                <div class="codbanco">341-7</div>
+            </div>
+            <div class="linha-digitavel">34190.00009 00000.000000 00000.000000 9 83720000000000</div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7">
+            <div class="titulo">Local de pagamento</div>
+            <div class="conteudo">Até o vencimento, pague preferencialmente no Itaú. Após o vencimento pague somente no Itaú</div>
+        </td>
+        <td width="180">
+            <div class="titulo">Vencimento</div>
+            <div class="conteudo rtl">08/09/2020</div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" rowspan="2" valign="top">
+            <div class="titulo">Beneficiário</div>
+            <div class="conteudo float_left"><br /><br /></div>
+            <div class="conteudo cpf_cnpj"></div>
+            
+
+        </td>
+        <td>
+            <div class="titulo">Agência/Código beneficiário</div>
+            <div class="conteudo rtl"> / </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="titulo">Nosso número</div>
+            <div class="conteudo rtl">000/00000000-0</div>
+        </td>
+    </tr>
+    <tr>
+        <td width="110" colspan="2">
+            <div class="titulo">Data do documento</div>
+            <div class="conteudo">08/09/2020</div>
+        </td>
+        <td width="120" colspan="2">
+            <div class="titulo">Nº documento</div>
+            <div class="conteudo"></div>
+        </td>
+        <td width="60">
+            <div class="titulo">Espécie doc.</div>
+            <div class="conteudo"></div>
+        </td>
+        <td>
+            <div class="titulo">Aceite</div>
+            <div class="conteudo">N</div>
+        </td>
+        <td width="110">
+            <div class="titulo">Data processamento</div>
+            <div class="conteudo">08/09/2020</div>
+        </td>
+        <td>
+            <div class="titulo">(=) Valor do Documento</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+                    <td colspan="2">
+                <div class="titulo">Uso do banco</div>
+                <div class="conteudo"></div>
+            </td>
+        
+        
+        <td>
+            <div class="titulo">Carteira</div>
+            <div class="conteudo"></div>
+        </td>
+        <td width="35">
+            <div class="titulo">Espécie</div>
+            <div class="conteudo">REAL</div>
+        </td>
+        <td colspan="2">
+            <div class="titulo">Quantidade</div>
+            <div class="conteudo"></div>
+        </td>
+        <td width="110">
+            <div class="titulo">Valor</div>
+            <div class="conteudo"></div>
+        </td>
+        <td>
+            <div class="titulo">(-) Descontos / Abatimentos</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" valign="top">
+            <div class="titulo">Instruções (Texto de responsabilidade do beneficiário)</div>
+        </td>
+        <td>
+            <div class="titulo">(-) Outras deduções</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" class="notopborder" valign="top">
+            <div class="conteudo">Pagar até a data do vencimento.</div>
+            <div class="conteudo"></div>
+        </td>
+        <td>
+            <div class="titulo">(+) Mora / Multa</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" class="notopborder">
+            <div class="conteudo"></div>
+            <div class="conteudo"></div>
+        </td>
+        <td>
+            <div class="titulo">(+) Outros acréscimos</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" class="notopborder">
+            <div class="conteudo"></div>
+            <div class="conteudo"></div>
+        </td>
+        <td>
+            <div class="titulo">(=) Valor cobrado</div>
+            <div class="conteudo rtl"></div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" valign="top">
+            <div class="titulo">Pagador</div>
+            <div class="conteudo float_left"><br />
+            <br /></div>
+            <div class="conteudo cpf_cnpj"></div>
+        </td>
+        <td class="noleftborder">
+            <div class="titulo" style="margin-top: 50px">Cód. Baixa</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="6" class="noleftborder">
+            <div class="titulo">Pagador / Avalista <div class="conteudo pagador"></div></div>
+        </td>
+        <td colspan="2" class="norightborder noleftborder">
+            <div class="conteudo noborder rtl">Autenticação mecânica - Ficha de Compensação</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="8" class="noborder">
+            <div class="barcode"><div class="black thin"></div><div class="white thin"></div><div class="black thin"></div><div class="white thin"></div><div class='black large'></div><div class='white thin'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white thin'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black thin'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white large'></div><div class='black thin'></div><div class='white large'></div><div class='black large'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black thin'></div><div class='white thin'></div><div class='black large'></div><div class='white large'></div><div class='black large'></div><div class='white large'></div><div class='black thin'></div><div class='white thin'></div><div class="black large"></div><div class="white thin"></div><div class="black thin"></div></div>        </td>
+    </tr>
+
+    </tbody>
+</table>
+    </div>
+</body>
+</html>

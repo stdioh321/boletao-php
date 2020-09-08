@@ -25,7 +25,6 @@
         "php": "^7.2",
         "ext-json": "*",
         "davidepastore/slim-validation": "^0.5.1",
-        "dompdf/dompdf": "^0.8.6",
         "kriansa/h2p": "dev-master",
         "monolog/monolog": "^2.1",
         "openboleto/openboleto": "dev-master",
@@ -33,9 +32,7 @@
         "slim/php-view": "^3.0",
         "slim/psr7": "^1.1",
         "slim/slim": "4.5",
-        "slim/twig-view": "^3.1",
-        "spatie/browsershot": "^3.37",
-        "spipu/html2pdf": "^5.2"
+        "slim/twig-view": "^3.1"        
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^0.8.0",

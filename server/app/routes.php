@@ -213,11 +213,10 @@ return function (App $app) {
         // wkhtmltoimage
 
         try {
-            if (is_dir(__DIR__ . "/tmp")) {
+            if (!is_dir(__DIR__ . "/tmp")) {
                 mkdir(__DIR__ . "/tmp");
             }
-            $id = uniqid(rand() . "", true);
-
+            $id = uniqid(strval(rand()), true);
             $fHtml = __DIR__ . "/tmp/tmp_" . $id . ".html";
             $fImage = "";
             $fp = fopen($fHtml, "w");
@@ -236,10 +235,10 @@ return function (App $app) {
                 $response->withStatus(500);
             }
             if (isset($fHtml) && file_exists($fHtml)) {
-                unlink($fHtml);
+                // unlink($fHtml);
             }
             if (isset($fImage) && file_exists($fImage)) {
-                unlink($fImage);
+                // unlink($fImage);
             }
         } catch (\Throwable $th) {
             //throw $th;
