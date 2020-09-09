@@ -17,8 +17,8 @@ Cliente foi criado usando o **FLUTTER**
 ```
 $ git clone https://github.com/stdioh321/boletao-php.git
 $ cd boletao-php/client/boletao
-# flutter clean
-# flutter pub get
+$ flutter clean
+$ flutter pub get
 ```
 ## Run
 Conecte um dispositivo android com o modo debug habilitado.
