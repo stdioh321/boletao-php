@@ -1,6 +1,6 @@
 # Boletao
 
-Cliente e Servidor gerador de boletos para varios bancos.
+Cliente e Servidor gerador de boletos para varios bancos, utilizando a biblioteca openboleto.
 
 # Demo
 Demo criada com o Flutter, exportando para web.
@@ -35,7 +35,7 @@ Home | Boleto Detalhes
 
 
 # Servidor
-Cliente foi criado usando o php, com o framework **Slim**, e para gerar os boletos a biblioteca openboleto
+Servidor foi criado usando o php, com o framework **Slim**, e para gerar os boletos a biblioteca openboleto
 
 ## Requisitos
 1. [PHP >= 5.4.0](https://www.php.net/manual/en/install.php)

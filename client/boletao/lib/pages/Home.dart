@@ -278,11 +278,16 @@ class _HomePageState extends State<HomePage> {
           (boleto['sac_doc'] as String).replaceAll(RegExp(r'\D'), '');
       boleto['ced_doc'] =
           (boleto['ced_doc'] as String).replaceAll(RegExp(r'\D'), '');
-      print(boleto);
+      // print(boleto);
       try {
-        Response resp = await post(
-            // "https://boletao.herokuapp.com/banco/" + boleto['banco'],
-            "https://localhost:9999/banco/" + boleto['banco'],
+        String url = "https://boletao.herokuapp.com/banco/";
+        const tmp = String.fromEnvironment("local");
+        if (tmp.isNotEmpty == true) {
+          url = "https://localhost:9999/banco/";
+        }
+
+        Response resp = await post(url + boleto['banco'],
+            // "https://localhost:9999/banco/" + boleto['banco'],
             body: boleto);
 
         if (resp.statusCode == 200) {
