@@ -40,6 +40,26 @@ class _HomePageState extends State<HomePage> {
     "Unicred",
     "Uniprime"
   ];
+
+  var _mapFields = Map<String, FieldHandler>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _mapFields.putIfAbsent("banco", () => FieldHandler());
+    _mapFields.putIfAbsent("dt_venc", () => FieldHandler());
+    _mapFields.putIfAbsent("convenio", () => FieldHandler());
+    _mapFields.putIfAbsent("sac_nome", () => FieldHandler());
+    _mapFields.putIfAbsent("sac_doc", () => FieldHandler());
+    _mapFields.putIfAbsent("cec_nome", () => FieldHandler());
+    _mapFields.putIfAbsent("cec_doc", () => FieldHandler());
+    _mapFields.putIfAbsent("valor", () => FieldHandler());
+    _mapFields.putIfAbsent("agencia", () => FieldHandler());
+    _mapFields.putIfAbsent("conta", () => FieldHandler());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +78,7 @@ class _HomePageState extends State<HomePage> {
                 DropdownSearch<String>(
                   mode: Mode.DIALOG,
                   // showSelectedItem: true,
+
                   validator: (v) {
                     if (v == null || v.isEmpty) {
                       return "Valor Invalido";
@@ -291,9 +312,31 @@ class _HomePageState extends State<HomePage> {
         Utils.instance.defaultToast("Erro desconhecido", bg: Colors.red);
         print(e);
       }
+    } else {
+      print("------------------------------------");
+      // _mapFields.keys.firstWhere((el) {
+      //   if (_mapFields[el].key.currentState.isValid == false) {
+      //     _mapFields[el].focus.requestFocus();
+      //     return true;
+      //   }
+      //   return false;
+      // });
+      print("------------------------------------");
     }
     setState(() {
       loading = false;
     });
+  }
+}
+
+class FieldHandler {
+  TextEditingController ctrl;
+  FocusNode focus;
+  GlobalKey<FormFieldState> key;
+
+  FieldHandler({String text = ""}) {
+    this.ctrl = TextEditingController(text: text);
+    this.focus = FocusNode();
+    this.key = GlobalKey<FormFieldState>();
   }
 }
