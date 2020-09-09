@@ -35,7 +35,16 @@ return function (App $app) {
         // return $this->get('view')->render($res, 'home.twig', [
         //     "user" => "Manezao"
         // ]);
-        $res->getBody()->write("Root");
+        $res->getBody()->write("
+        <html>
+        <body>
+        <h1>Exemplos</h1>
+            <h2><a href='/banco/itau'>Itau</a></h2>            
+            <h2><a href='/banco/bradesco'>Bradesco</a></h2>
+            <h2><a href='/banco/santander'>Santander</a></h2>
+        </body>
+        </html>
+        ");
         // phpinfo();
         return $res;
     });
