@@ -28,9 +28,9 @@ Conecte um dispositivo android com o modo debug habilitado.
  $ flutter run
  ```
 
-
-![Home 1!](docs/screenshots/client_android_2.png "Home 1")
-![Boleto Detalhes 1!](docs/screenshots/client_android_3.png "Boleto Detalhes 1")
+Home | Boleto Detalhes
+:---:|:---:
+![Home 1!](docs/screenshots/client_android_2.png "Home 1") | ![Boleto Detalhes 1!](docs/screenshots/client_android_3.png "Boleto Detalhes 1")
 
 
 
@@ -38,14 +38,15 @@ Conecte um dispositivo android com o modo debug habilitado.
 Cliente foi criado usando o php, com o framework **Slim**, e para gerar os boletos a biblioteca openboleto
 
 ## Requisitos
-1. [PHP](https://www.php.net/manual/en/install.php)
+1. [PHP >= 5.4.0](https://www.php.net/manual/en/install.php)
 2. [Composer](https://getcomposer.org/download/)
+3. [Wkhtmltopdf/Wkhtmltoimage (Necessário estar acessivel pelo PATH)](https://wkhtmltopdf.org/)
 
 ## Setup
 ```
 $ git clone https://github.com/stdioh321/boletao-php.git
 $ cd boletao-php/server
-# composer install
+$ composer install
 ```
 ## Run
 

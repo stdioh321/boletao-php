@@ -213,17 +213,18 @@ return function (App $app) {
         // wkhtmltoimage
 
         try {
-            if (!is_dir(__DIR__ . "/tmp")) {
-                mkdir(__DIR__ . "/tmp");
+            $tmpPath = realpath(__DIR__ . "/tmp");
+            if (!is_dir($tmpPath)) {
+                mkdir($tmpPath);
             }
             $id = uniqid(strval(rand()), true);
-            $fHtml = __DIR__ . "/tmp/tmp_" . $id . ".html";
+            $fHtml = "$tmpPath/tmp_" . $id . ".html";
             $fImage = "";
             $fp = fopen($fHtml, "w");
             fwrite($fp, $html);
             fclose($fp);
             if (file_exists($fHtml)) {
-                $fImage = __DIR__ . "/tmp/tmp_" . $id . ".png";
+                $fImage = "$tmpPath/tmp_" . $id . ".png";
                 exec("wkhtmltoimage --width 700 $fHtml $fImage");
                 
                 header("Content-Type: image/png");
